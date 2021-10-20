@@ -1,8 +1,8 @@
 const Movie = require('../models/movieSchema');
 
-const NotFoundError = require("../utils/Errors/NotFoundError");
-const ForbiddenError = require("../utils/Errors/ForbiddenError");
-const ValidationError = require("../utils/Errors/BadRequestError");
+const NotFoundError = require('../utils/Errors/NotFoundError');
+const ForbiddenError = require('../utils/Errors/ForbiddenError');
+const ValidationError = require('../utils/Errors/BadRequestError');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
@@ -33,7 +33,7 @@ module.exports.deleteMovieById = (req, res, next) => {
         return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
       }
       if (owner !== String(movie.owner)) {
-        return next(new ForbiddenError('Вы не можете удалить чужой фильм!'))
+        return next(new ForbiddenError('Вы не можете удалить чужой фильм!'));
       }
 
       return Movie.findByIdAndRemove(movieId)

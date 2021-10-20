@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const validateURL = require('../utils/validateUrl');
 const { celebrate, Joi } = require('celebrate');
+const validateURL = require('../utils/validateUrl');
 
-const { createMovie, getMovies, deleteMovieById} = require('../controllers/movies');
+const { createMovie, getMovies, deleteMovieById } = require('../controllers/movies');
 
 router.get('/', getMovies);
 
@@ -19,13 +19,13 @@ router.post('/', celebrate({
     thumbnail: Joi.string().required().custom(validateURL),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-  })
+  }),
 }), createMovie);
 
 router.delete('/:movieId', celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().required().hex(),
-  })
+  }),
 }), deleteMovieById);
 
 module.exports = router;
