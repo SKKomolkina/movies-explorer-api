@@ -13,10 +13,10 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  const movieInfo = req.body;
+  const { ...info } = req.body;
   const owner = req.user._id;
 
-  Movie.create({ movieInfo, owner })
+  Movie.create({ ...info, owner })
     .then((movie) => {
       res.status(200).send(movie);
     })
