@@ -15,7 +15,7 @@ const movieRouter = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
-const { MONGO } = require("./utils/config");
+const { MONGO } = require('./utils/config');
 
 const { PORT = 3000 } = process.env;
 
