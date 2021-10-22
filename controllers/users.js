@@ -96,7 +96,7 @@ module.exports.updateUser = (req, res, next) => {
           }
         })
         .catch((err) => {
-          if ((err.name === 'CastError')|| (err.name === 'ValidationError')) {
+          if (err.name === 'ValidationError') {
             throw new NotFoundError('Переданы некорректные данные');
           } else {
             next(err);

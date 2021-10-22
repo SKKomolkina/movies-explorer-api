@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
+const rateLimit = require('express-rate-limit');
+const rateLimiter = require('./utils/rateLimiter');
+const limiter = rateLimit(rateLimiter);
+
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const error = require('./middlewares/error');
@@ -28,6 +32,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(limiter);
 
 mongoose.connect(MONGO);
 

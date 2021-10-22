@@ -2,7 +2,7 @@ const Movie = require('../models/movieSchema');
 
 const NotFoundError = require('../utils/Errors/NotFoundError');
 const ForbiddenError = require('../utils/Errors/ForbiddenError');
-const ValidationError = require('../utils/Errors/BadRequestError');
+const BadRequestError = require('../utils/Errors/BadRequestError');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
@@ -36,13 +36,13 @@ module.exports.deleteMovieById = (req, res, next) => {
         return next(new ForbiddenError('Вы не можете удалить чужой фильм!'));
       }
 
-      return Movie.findByIdAndRemove(movieId)
+      return Movie.remove(movieId)
         .then((data) => {
-          res.status(200).send(data);
+          res.send({ message: data });
         })
         .catch((err) => {
           if (err.name === 'CastError') {
-            throw new ValidationError('Переданы некорректные данные!');
+            throw new BadRequestError('Переданы некорректные данные!');
           }
         })
         .catch(next);
