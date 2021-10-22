@@ -67,7 +67,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Необходима авторизация');
+        throw new NotFoundError('Пользователь не найден');
       }
       res.status(200).send({
         email: user.email,
@@ -80,19 +80,28 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { email, name },
-    { new: true, runValidators: true })
+  User.findOne({ email: email })
     .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      } else {
-        res.status(200).send(user);
+      if (user) {
+        throw new ConflictError('Почта уже занята!');
       }
-    })
-    .catch((err) => {
-      if ((err.name === 'CastError') || (err.name === 'ValidationError')) {
-        throw new NotFoundError('Переданы некорректные данные');
-      }
+
+      User.findByIdAndUpdate(req.user._id, { email, name },
+        { new: true, runValidators: true })
+        .then((user) => {
+          if (!user) {
+            throw new NotFoundError('Пользователь не найден');
+          } else {
+            res.status(200).send(user);
+          }
+        })
+        .catch((err) => {
+          if ((err.name === 'CastError')|| (err.name === 'ValidationError')) {
+            throw new NotFoundError('Переданы некорректные данные');
+          } else {
+            next(err);
+          }
+        })
     })
     .catch(next);
 };
