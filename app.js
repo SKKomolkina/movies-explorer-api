@@ -4,12 +4,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const { errors } = require('celebrate');
 
 const rateLimit = require('express-rate-limit');
 const rateLimiter = require('./utils/rateLimiter');
+
 const limiter = rateLimit(rateLimiter);
 
-const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const error = require('./middlewares/error');
 

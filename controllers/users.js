@@ -80,9 +80,9 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
-  User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
+  User.findOne({ email })
+    .then((data) => {
+      if (data) {
         throw new ConflictError('Почта уже занята!');
       }
 
@@ -101,7 +101,7 @@ module.exports.updateUser = (req, res, next) => {
           } else {
             next(err);
           }
-        })
+        });
     })
     .catch(next);
 };
