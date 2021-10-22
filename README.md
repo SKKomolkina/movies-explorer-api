@@ -1,3 +1,3 @@
 # movies-explorer-api
 
-# https://movies-skomolkina.nomoredomains.monster
+# https://api.movies-skomolkina.nomoredomains.monster
