@@ -22,8 +22,8 @@ const routers = require('./routes/index');
 const allowedCors = [
   'localhost:3000',
   'http://localhost:3000',
-  'http://api.movies-skomolkina.nomoredomains.monster',
-  'https://api.movies-skomolkina.nomoredomains.monster',
+  'http://movies-skomolkina.nomoredomains.monster',
+  'https://movies-skomolkina.nomoredomains.monster',
 ];
 
 const { PORT = 3000 } = process.env;
