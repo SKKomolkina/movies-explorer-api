@@ -56,7 +56,7 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  movieId: {
+  id: {
     type: Number,
     required: true,
   },
