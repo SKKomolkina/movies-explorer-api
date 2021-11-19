@@ -29,8 +29,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
-
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
@@ -50,6 +48,8 @@ app.use((req, res, next) => {
 
   return next();
 });
+
+mongoose.connect('mongodb://localhost:27017/moviesdb');
 
 app.use(requestLogger);
 
