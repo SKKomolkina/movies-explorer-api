@@ -9,7 +9,7 @@ const {requestLogger, errorLogger} = require('./middlewares/logger');
 const error = require('./middlewares/error');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
-const { MONGO } = require('./utils/config');
+// const { MONGO } = require('./utils/config');
 
 const routers = require('./routes/index');
 
@@ -26,12 +26,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(requestLogger);
 
-mongoose.connect(MONGO, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+mongoose.connect('mongodb://localhost:27017/dimplomamovies');
 
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -53,17 +50,15 @@ app.use((req, res, next) => {
   return next();
 });
 
-app.use(requestLogger);
-
 app.use('/', routers);
-
-app.use('*', () => {
-  throw new NotFoundError('Страница не найдена!');
-});
 
 app.use(errorLogger);
 
 app.use(errors());
 app.use(error);
+
+app.use('*', () => {
+  throw new NotFoundError('Страница не найдена!');
+});
 
 app.listen(PORT);
