@@ -49,7 +49,7 @@ app.use((req, res, next) => {
   return next();
 });
 
-mongoose.connect('mongodb://localhost:27017/moviesdb');
+mongoose.connect('mongodb://localhost:27017/dimplomamovies');
 
 app.use(requestLogger);
 
