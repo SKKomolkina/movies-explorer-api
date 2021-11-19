@@ -10,7 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const error = require('./middlewares/error');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
-const { MONGO } = require('./utils/config');
+// const { MONGO } = require('./utils/config');
 
 const routers = require('./routes/index');
 
@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
-mongoose.connect(MONGO);
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
