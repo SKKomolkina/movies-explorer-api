@@ -28,7 +28,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(requestLogger);
 
-mongoose.connect('mongodb://localhost:27017/dimplomamovies');
+const db = 'mongodb://localhost:27017/dimplomamovies';
+mongoose.connect(db);
 
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
