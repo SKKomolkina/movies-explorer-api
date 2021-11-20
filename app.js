@@ -20,7 +20,7 @@ const allowedCors = [
   'https://api.movies-skomolkina.nomoredomains.monster',
 ];
 
-const {PORT = 3000} = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -38,8 +38,8 @@ mongoose.connect(db);
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
-  const {origin} = req.headers;
-  const {method} = req;
+  const { origin } = req.headers;
+  const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];
 
   if (allowedCors.includes(origin)) {

@@ -7,7 +7,7 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 module.exports.getSavedMovies = (req, res, next) => {
   const movieOwner = req.user._id;
 
-  Movie.find({ owner: movieOwner }).then((movies) => {
+  Movie.find({owner: movieOwner}).then((movies) => {
     if (movies.length === 0) {
       return next(new NotFoundError('Сохраненных фильмов нет!'));
     }
@@ -25,53 +25,53 @@ module.exports.createMovie = (req, res, next) => {
   } = req.body;
   const owner = req.user._id;
 
-  Movie.findOne({owner, movieId}).then((data) => {
-      if (data) {
-        return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
-      }
+  Movie.findOne({ owner, movieId }).then((data) => {
+    if (data) {
+      return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
+    }
 
-      return Movie.create({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailer,
-        nameRU,
-        nameEN,
-        thumbnail,
-        movieId,
-        owner,
+    return Movie.create({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+      owner,
+    })
+      .then((movie) => {
+        res.status(200).send(movie);
       })
-        .then((movie) => {
-          res.status(200).send(movie);
-        })
-        .catch(next)
-    });
+      .catch(next)
+  });
 }
 
-  module.exports.deleteMovieById = (req, res, next) => {
-    const owner = req.user._id;
+module.exports.deleteMovieById = (req, res, next) => {
+  const owner = req.user._id;
 
-    Movie.findById(req.params.movieId)
-      .then((movie) => {
-        if (!movie) {
-          return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
-        }
-        if (owner !== String(movie.owner)) {
-          return next(new ForbiddenError('Вы не можете удалить чужой фильм!'));
-        }
+  Movie.findById(req.params.movieId)
+    .then((movie) => {
+      if (!movie) {
+        return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
+      }
+      if (owner !== String(movie.owner)) {
+        return next(new ForbiddenError('Вы не можете удалить чужой фильм!'));
+      }
 
-        return Movie.remove(movie)
-          .then((data) => {
-            res.send({message: data});
-          })
-          .catch((err) => {
-            if (err.name === 'CastError') {
-              throw new BadRequestError('Переданы некорректные данные!');
-            }
-          })
-          .catch(next);
-      });
-  };
+      return Movie.remove(movie)
+        .then((data) => {
+          res.send({message: data});
+        })
+        .catch((err) => {
+          if (err.name === 'CastError') {
+            throw new BadRequestError('Переданы некорректные данные!');
+          }
+        })
+        .catch(next);
+    });
+};
