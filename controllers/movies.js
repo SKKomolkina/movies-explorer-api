@@ -8,7 +8,7 @@ module.exports.getSavedMovies = (req, res, next) => {
   const movieOwner = req.user._id;
 
   Movie.find({ owner: movieOwner }).then((movies) => {
-    if (movies.lenght === 0) {
+    if (movies.length === 0) {
       return next(new NotFoundError('Сохраненных фильмов нет!'));
     }
   })
