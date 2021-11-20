@@ -19,13 +19,13 @@ router.post('/movies', celebrate({
     thumbnail: Joi.string().required().custom(validateURL),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    id: Joi.number().required(),
+    movieId: Joi.number().required(),
   }),
 }), createMovie);
 
-router.delete('/movies/:id', celebrate({
+router.delete('/movies/:movieId', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required().max(24),
+    movieId: Joi.string().required().max(24),
   }),
 }), deleteMovieById);
 
