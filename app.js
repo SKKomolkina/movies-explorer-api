@@ -3,9 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const {errors} = require('celebrate');
+const { errors } = require('celebrate');
 
-const {requestLogger, errorLogger} = require('./middlewares/logger');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const error = require('./middlewares/error');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
@@ -20,7 +20,7 @@ const allowedCors = [
   'https://api.movies-skomolkina.nomoredomains.monster',
 ];
 
-const {PORT = 3000} = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -38,8 +38,8 @@ mongoose.connect(db);
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
-  const {origin} = req.headers;
-  const {method} = req;
+  const { origin } = req.headers;
+  const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];
 
   if (allowedCors.includes(origin)) {
