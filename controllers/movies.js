@@ -26,7 +26,7 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovieById = (req, res, next) => {
   const owner = req.user._id;
 
-  Movie.findById(req.params.id)
+  Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
