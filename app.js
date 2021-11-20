@@ -18,14 +18,6 @@ const userRouter = require('./routes/users');
 const movieRouter = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
 
-const allowedCors = [
-  'localhost:3000',
-  'http://localhost:3000',
-  'http://api.movies-skomolkina.nomoredomains.monster',
-  'https://api.movies-skomolkina.nomoredomains.monster',
-  'https://api.movies-skomolkina.nomoredomains.monster/',
-];
-
 const { PORT = 3000 } = process.env;
 
 const app = express();
@@ -40,6 +32,14 @@ mongoose.connect(db);
 // mongoose.connect('mongodb://localhost:27017/', {
 //   dbName: 'dimplomamovies', useNewUrlParser: true, useUnifiedTopology: true
 // }, err => err ? console.log(err) : console.log('Connected to database'));
+
+const allowedCors = [
+  'localhost:3000',
+  'http://localhost:3000',
+  'https://localhost:3000',
+  'http://api.movies-skomolkina.nomoredomains.monster',
+  'https://api.movies-skomolkina.nomoredomains.monster',
+];
 
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
