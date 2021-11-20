@@ -18,6 +18,7 @@ const allowedCors = [
   'http://localhost:3000',
   'http://api.movies-skomolkina.nomoredomains.monster',
   'https://api.movies-skomolkina.nomoredomains.monster',
+  'https://api.movies-skomolkina.nomoredomains.monster/'
 ];
 
 const { PORT = 3000 } = process.env;
@@ -35,7 +36,8 @@ mongoose.connect(db);
 //   dbName: 'dimplomamovies', useNewUrlParser: true, useUnifiedTopology: true
 // }, err => err ? console.log(err) : console.log('Connected to database'));
 
-app.use((req, res, next) => {
+app.use((req, res,
+         next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
   const { origin } = req.headers;
