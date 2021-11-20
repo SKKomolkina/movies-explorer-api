@@ -28,12 +28,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(requestLogger);
 
-// const db = 'mongodb://localhost:27017/dimplomamovies';
-// mongoose.connect(db);
+const db = 'mongodb://localhost:27017/dbmovies';
+mongoose.connect(db);
 
-mongoose.connect('mongodb://localhost:27017/', {
-  dbName: 'dimplomamovies', useNewUrlParser: true, useUnifiedTopology: true
-}, err => err ? console.log(err) : console.log('Connected to database'));
+// mongoose.connect('mongodb://localhost:27017/', {
+//   dbName: 'dimplomamovies', useNewUrlParser: true, useUnifiedTopology: true
+// }, err => err ? console.log(err) : console.log('Connected to database'));
 
 app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
