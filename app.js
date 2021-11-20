@@ -3,22 +3,27 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { errors } = require('celebrate');
+// const { errors } = require('celebrate');
 
+const { celebrate, Joi, errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const error = require('./middlewares/error');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
 // const { MONGO } = require('./utils/config');
 
-const routers = require('./routes/index');
+// const routers = require('./routes/index');
+const auth = require('./middlewares/auth');
+const userRouter = require('./routes/users');
+const movieRouter = require('./routes/movies');
+const { login, createUser } = require('./controllers/users');
 
 const allowedCors = [
   'localhost:3000',
   'http://localhost:3000',
   'http://api.movies-skomolkina.nomoredomains.monster',
   'https://api.movies-skomolkina.nomoredomains.monster',
-  'https://api.movies-skomolkina.nomoredomains.monster/'
+  'https://api.movies-skomolkina.nomoredomains.monster/',
 ];
 
 const { PORT = 3000 } = process.env;
@@ -26,7 +31,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 const db = 'mongodb://localhost:27017/dbmovies';
@@ -36,8 +41,7 @@ mongoose.connect(db);
 //   dbName: 'dimplomamovies', useNewUrlParser: true, useUnifiedTopology: true
 // }, err => err ? console.log(err) : console.log('Connected to database'));
 
-app.use((req, res,
-         next) => {
+app.use((req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
   const { origin } = req.headers;
@@ -57,15 +61,36 @@ app.use((req, res,
   return next();
 });
 
-app.use('/', routers);
+// app.use('/', routers);
+
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+    name: Joi.string().required().min(2).max(30),
+  }),
+}), createUser);
+
+app.use(auth);
+
+app.use('/users', userRouter);
+
+app.use('/movies', movieRouter);
 
 app.use(errorLogger);
-
-app.use(errors());
-app.use(error);
 
 app.use('*', () => {
   throw new NotFoundError('Страница не найдена!');
 });
+
+app.use(errors());
+app.use(error);
 
 app.listen(PORT);

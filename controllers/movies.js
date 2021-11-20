@@ -7,11 +7,7 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 module.exports.getSavedMovies = (req, res, next) => {
   const movieOwner = req.user._id;
 
-  Movie.find({owner: movieOwner}).then((movies) => {
-    if (movies.length === 0) {
-      return next(new NotFoundError('Сохраненных фильмов нет!'));
-    }
-  })
+  Movie.find({ owner: movieOwner })
     .then((movies) => {
       res.status(200).send(movies);
     })
@@ -21,7 +17,7 @@ module.exports.getSavedMovies = (req, res, next) => {
 module.exports.createMovie = (req, res, next) => {
   const {
     country, director, duration, year, description, image,
-    trailer, nameRU, nameEN, thumbnail, movieId
+    trailer, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
   const owner = req.user._id;
 
@@ -47,9 +43,9 @@ module.exports.createMovie = (req, res, next) => {
       .then((movie) => {
         res.status(200).send(movie);
       })
-      .catch(next)
+      .catch(next);
   });
-}
+};
 
 module.exports.deleteMovieById = (req, res, next) => {
   const owner = req.user._id;
@@ -65,7 +61,7 @@ module.exports.deleteMovieById = (req, res, next) => {
 
       return Movie.remove(movie)
         .then((data) => {
-          res.send({message: data});
+          res.send({ message: data });
         })
         .catch((err) => {
           if (err.name === 'CastError') {
