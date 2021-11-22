@@ -3,9 +3,9 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const validateURL = require('../utils/validateUrl');
 
-const { createMovie, getMovies, deleteMovieById } = require('../controllers/movies');
+const { createMovie, deleteMovieById, getSavedMovies } = require('../controllers/movies');
 
-router.get('/movies', getMovies);
+router.get('/movies', getSavedMovies);
 
 router.post('/movies', celebrate({
   body: Joi.object().keys({
