@@ -15,37 +15,14 @@ module.exports.getSavedMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  const {
-    country, director, duration, year, description, image,
-    trailer, nameRU, nameEN, thumbnail, movieId,
-  } = req.body;
+  const { ...info } = req.body;
   const owner = req.user._id;
 
-  Movie.findOne({ owner, movieId }).then((data) => {
-    if (data) {
-      return next(new NotFoundError('Возникла ошибка: фильм с указанным ID не найден!'));
-    }
-
-    return Movie.create({
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailer,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId,
-      owner,
+  Movie.create({ ...info, owner })
+    .then((movie) => {
+      res.status(200).send(movie);
     })
-      .then((movie) => {
-        res.status(200).send(movie);
-      })
-      .catch(err => console.log(err))
-      .catch(next);
-  }).catch(next);
+    .catch(next);
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
