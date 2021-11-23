@@ -43,8 +43,9 @@ module.exports.createMovie = (req, res, next) => {
       .then((movie) => {
         res.status(200).send(movie);
       })
+      .catch(err => console.log(err))
       .catch(next);
-  });
+  }).catch(next);
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
